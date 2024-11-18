@@ -1,4 +1,4 @@
-Parness is a simple bash script to check the configuration of your Linux system.
+*Parness* is a simple bash script to check the configuration of your Linux system.
 
 # Requirements 
 
@@ -14,6 +14,8 @@ In order to use Parness, you must have root privileges
 
 ``./parness.sh check dns ``
 
+The file *whitelistDNS* contains all authorized DNS IP adresses.
+The script check if the current DNS adress is in this whitelist 
 
 * Check proxy configuration
 
@@ -22,3 +24,4 @@ In order to use Parness, you must have root privileges
 * Check deamon processes
 
 ``./parness.sh check deamon ``
+
