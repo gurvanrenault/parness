@@ -8,28 +8,28 @@ In order to use Parness, you must have root privileges
 
 * Check all the configuration
 
-``./parness.sh check all ``
+``sh parness check all ``
 
 * Check memory state
 
-``./parness.sh check memory ``
+``sh parness check memory ``
 
 * Check disk usage
 
-``./parness.sh check diskspace ``
+``sh parnesscheck diskspace ``
 
 * Check DNS configuration
 
-``./parness.sh check dns ``
+``sh parness check dns ``
 
 The file *whitelistDNS* contains all authorized DNS IP adresses.
 The script check if the current DNS adress is in this whitelist 
 
 * Check proxy configuration
 
-`` ./parness.sh check proxy ``
+`` sh parness check proxy ``
 
 * Check deamon processes
 
-``./parness.sh check deamon ``
+``sh parness check deamon ``
 
