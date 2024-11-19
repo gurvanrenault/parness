@@ -10,6 +10,14 @@ In order to use Parness, you must have root privileges
 
 ``./parness.sh check all ``
 
+* Check memory state
+
+``./parness.sh check memory ``
+
+* Check disk usage
+
+``./parness.sh check diskspace ``
+
 * Check DNS configuration
 
 ``./parness.sh check dns ``
