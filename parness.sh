@@ -7,14 +7,13 @@ isCommandFound=false
 isParameterCheckFound=false
 
 list_commands="check"
-list_parameters_check="dns all proxy deamon"
+list_parameters_check="dns all proxy deamon memory diskspace"
 
 echo "${BLANK}"
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Sanitize input from user 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 if  [ $# -lt 2 ]; then
- echo "AAAAAAA"; 
  cat  README.md
 else
    
@@ -32,8 +31,7 @@ else
                 break 
             fi 
         done
-       
-        echo "isParameterCheckFound : $isParameterCheckFound"
+
         if [ "$isParameterCheckFound" = "false" ];then
            
             cat README.md 
@@ -43,10 +41,27 @@ else
 fi
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 if [ isCommandFound ]; then
+        os=`cat /etc/os-release | grep 'NAME\|VERSION' | grep -v 'VERSION_ID' | grep -v 'PRETTY_NAME' | grep NAME`
+        echo "Operating System : $os";
+        if [ "$1" = "check" ] && ([ "$2" = "memory" ] ||  [ "$2" = "all" ]); then
+                echo  "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+                echo  "~~~~~~~~~~~~~~~~~~ Disk space  ~~~~~~~~~~~~~~~~~~~~~~"
+                echo  "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+                df -h
+        fi
+        if [ "$1" = "check" ] && ([ "$2" = "diskspace" ] ||  [ "$2" = "all" ]); then
+                echo  "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+                echo  "~~~~~~~~~~~~~~~~~ Free memory  ~~~~~~~~~~~~~~~~~~~~~~"
+                echo  "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+                free -h 
+        fi
         if [ "$1" = "check" ] && ([ "$2" = "dns" ] || [ "$2" = "all" ]); then
-                echo  "Check DNS in whitelist ... "
+                echo  "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+                echo  "~~~~~~~~~~~~~~~ DNS Configuration ~~~~~~~~~~~~~~~~~~~"
+                echo  "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
                 DNSVALUE=$(sudo grep -Eo '([0-9]+\.)+[0-9]+' /etc/resolv.conf)
-                echo "DNS value found :  $DNSVALUE"
+                echo "DNS value found :  $DNSVALUE in /etc/resolv.conf"
+                echo "Searching DNS value in the whitelist"
                 if grep -q $DNSVALUE whitelistDNS ; then
                 echo "${GREEN}DNS value found in whitelist ${BLANK}"
                 else
@@ -54,6 +69,9 @@ if [ isCommandFound ]; then
                 fi
         fi 
         if [ "$1" = "check" ] && ([ "$2" = "proxy" ] || [ "$2" = "all" ]); then
+                echo  "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+                echo  "~~~~~~~~~~~~~~ Proxy configuration ~~~~~~~~~~~~~~~~~~"
+                echo  "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
                 if [ ! -z $http_proxy ]; then
                 echo "Current HTTP proxy is $http_proxy ..."
                 else
@@ -62,11 +80,16 @@ if [ isCommandFound ]; then
                 if [ ! -z $https_proxy ]; then
                 echo "Current HTTPS proxy is $https_proxy ..."
                 else
-                echo "HTTPS proxy is not configured ..."
+                echo "HTTPS proxy is not configured "
                 fi
         fi
         if [ "$1" = "check" ] && ([ "$2" = "deamon" ] ||  [ "$2" = "all" ]); then
-                echo  "Listing all deamons ... "
+                echo  "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+                echo  "~~~~~~~~~~~~~~~~~ Daemon list  ~~~~~~~~~~~~~~~~~~~~~~"
+                echo  "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
                 systemctl | grep daemon
         fi
+        
+        
+
 fi
