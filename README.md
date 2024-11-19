@@ -16,7 +16,7 @@ In order to use Parness, you must have root privileges
 
 * Check disk usage
 
-``sh parnesscheck diskspace ``
+``sh parness check diskspace ``
 
 * Check DNS configuration
 
