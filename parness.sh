@@ -43,13 +43,13 @@ fi
 if [ isCommandFound ]; then
         os=`cat /etc/os-release | grep 'NAME\|VERSION' | grep -v 'VERSION_ID' | grep -v 'PRETTY_NAME' | grep NAME`
         echo "Operating System : $os";
-        if [ "$1" = "check" ] && ([ "$2" = "memory" ] ||  [ "$2" = "all" ]); then
+        if [ "$1" = "check" ] && ([ "$2" = "diskspace" ] ||  [ "$2" = "all" ]); then
                 echo  "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
                 echo  "~~~~~~~~~~~~~~~~~~ Disk space  ~~~~~~~~~~~~~~~~~~~~~~"
                 echo  "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
                 df -h
         fi
-        if [ "$1" = "check" ] && ([ "$2" = "diskspace" ] ||  [ "$2" = "all" ]); then
+        if [ "$1" = "check" ] && ([ "$2" = "memory" ] ||  [ "$2" = "all" ]); then
                 echo  "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
                 echo  "~~~~~~~~~~~~~~~~~ Free memory  ~~~~~~~~~~~~~~~~~~~~~~"
                 echo  "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
