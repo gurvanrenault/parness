@@ -7,12 +7,13 @@ isCommandFound=false
 isParameterCheckFound=false
 
 list_commands="check"
-list_parameters_check="dns all proxy deamon memory diskspace"
+list_parameters_check="dns all proxy deamon memory diskspace sudoers"
 
 echo "${BLANK}"
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Sanitize input from user 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Vérifier les paramètres 
 if  [ $# -lt 2 ]; then
  cat  README.md
 else
@@ -39,8 +40,10 @@ else
         fi
     fi
 fi
+
+
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-if [ isCommandFound ]; then
+if [ isCommandFound ] && [ "$(id -u)" -eq 0 ]; then
         os=`cat /etc/os-release | grep 'NAME\|VERSION' | grep -v 'VERSION_ID' | grep -v 'PRETTY_NAME' | grep NAME`
         echo "Operating System : $os";
         if [ "$1" = "check" ] && ([ "$2" = "diskspace" ] ||  [ "$2" = "all" ]); then
@@ -83,13 +86,20 @@ if [ isCommandFound ]; then
                 echo "HTTPS proxy is not configured "
                 fi
         fi
+        if [ "$1" = "check" ]  && ([ "$2" = "sudoers" ] ||  [ "$2" = "all" ]); then
+                echo  "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+                echo  "~~~~~~~~~~~~~~~~~ List Sudoers  ~~~~~~~~~~~~~~~~~~~~~"
+                echo  "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+                getent group sudo | cut -d: -f4
+        fi
         if [ "$1" = "check" ] && ([ "$2" = "deamon" ] ||  [ "$2" = "all" ]); then
                 echo  "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
                 echo  "~~~~~~~~~~~~~~~~~ Daemon list  ~~~~~~~~~~~~~~~~~~~~~~"
                 echo  "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
                 systemctl | grep daemon
         fi
-        
-        
+        #TODO : Vérifier mes droits dans un fichiers / dossier
 
+elif [ ! "$(id -u)" -eq 0 ]; then
+  echo "Please use this script with a root user"
 fi
