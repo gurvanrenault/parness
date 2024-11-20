@@ -29,6 +29,10 @@ The script check if the current DNS adress is in this whitelist
 
 `` sh parness check proxy ``
 
+* Check the list of sudoers
+
+`` sh parness check sudoers``
+
 * Check deamon processes
 
 ``sh parness check deamon ``
