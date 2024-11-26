@@ -35,5 +35,5 @@ The script check if the current DNS adress is in this whitelist
 
 * Check deamon processes
 
-``sh parness check deamon ``
+``sh parness check daemon ``
 
