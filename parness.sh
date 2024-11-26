@@ -7,7 +7,7 @@ isCommandFound=false
 isParameterCheckFound=false
 
 list_commands="check"
-list_parameters_check="dns all proxy deamon memory diskspace sudoers"
+list_parameters_check="dns all proxy daemon memory diskspace sudoers"
 
 echo "${BLANK}"
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -92,7 +92,7 @@ if [ isCommandFound ] && [ "$(id -u)" -eq 0 ]; then
                 echo  "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
                 getent group sudo | cut -d: -f4
         fi
-        if [ "$1" = "check" ] && ([ "$2" = "deamon" ] ||  [ "$2" = "all" ]); then
+        if [ "$1" = "check" ] && ([ "$2" = "daemon" ] ||  [ "$2" = "all" ]); then
                 echo  "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
                 echo  "~~~~~~~~~~~~~~~~~ Daemon list  ~~~~~~~~~~~~~~~~~~~~~~"
                 echo  "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
