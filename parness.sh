@@ -1,4 +1,5 @@
 #!/bin/sh
+
 GREEN='\033[0;32m'
 RED='\033[0;31m'
 BLANK='\033[0;37m'
@@ -48,6 +49,17 @@ if [ "$2" = "$3" ] && [ "$2" = "all" ]; then
 fi
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 if [ "$isCommandFound" = true ] && [ "$(id -u)" -eq 0 ] && ([ "$isParameterCheckFound" = true ] || [ "$isParameterScanFound" = true ]) ; then
+
+        echo "___________ _______  ____   ____   ______ ______"
+        echo "\____ \__  \\_  __ \/    \_/ __ \ /  ___//  ___/"
+        echo "|  |_> > __ \|  | \/   |  \  ___/ \___ \ \___ \ "
+        echo "|   __(____  /__|  |___|  /\___  >____  >____  >"
+        echo "|__|       \/           \/     \/     \/     \/ "            
+        
+        # Add your name here if you participate to this project  
+        echo " By : Gurvan Renault"
+
+        echo " \n \n"
         os=`cat /etc/os-release | grep 'NAME\|VERSION' | grep -v 'VERSION_ID' | grep -v 'PRETTY_NAME' | grep NAME`
         echo "Operating System : $os";
         if [ "$1" = "check" ] && ([ "$2" = "diskspace" ] ||  [ "$2" = "all" ]); then
