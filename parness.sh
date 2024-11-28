@@ -13,7 +13,7 @@ echo "${BLANK}"
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Sanitize input from user 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Vérifier les paramètres 
+# Check parameters inputs  
 if  [ $# -lt 2 ]; then
  cat  README.md
 else
@@ -41,6 +41,10 @@ else
         done
 
     fi
+fi
+# Limit cases 
+if [ "$2" = "$3" ] && [ "$2" = "all" ]; then
+   isParameterScanFound=false 
 fi
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 if [ "$isCommandFound" = true ] && [ "$(id -u)" -eq 0 ] && ([ "$isParameterCheckFound" = true ] || [ "$isParameterScanFound" = true ]) ; then
@@ -109,13 +113,13 @@ if [ "$isCommandFound" = true ] && [ "$(id -u)" -eq 0 ] && ([ "$isParameterCheck
                 chkrootkit -q 
         fi
 
-        if [ "$1" = "scan" ] && ([ "$2" = "antivirus" ] ||  [ "$2" = "all" ]) && [ "$3" = "binaries" ]; then
+        if [ "$1" = "scan" ] && ([ "$2" = "antivirus" ] ||  [ "$2" = "all" ]) && ([ "$3" = "binaries" ] || [ "$3" = "all" ])   ; then
                 echo  "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
                 echo  "~~~~~~~~~~~~~ Binairies virus detection ~~~~~~~~~~~~~"
                 echo  "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
                 sudo clamscan -r /bin/*
         fi
-        if [ "$1" = "scan" ] && ([ "$2" = "antivirus" ] ||  [ "$2" = "all" ]) && [ "$3" = "home" ]; then
+        if [ "$1" = "scan" ] && ([ "$2" = "antivirus" ] ||  [ "$2" = "all" ]) && ([ "$3" = "home" ] || [ "$3" = "all" ]); then
                 echo  "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
                 echo  "~~~~~~~~~~~~ Home files virus detection ~~~~~~~~~~~~"
                 echo  "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
@@ -123,13 +127,12 @@ if [ "$isCommandFound" = true ] && [ "$(id -u)" -eq 0 ] && ([ "$isParameterCheck
         
         
         fi
-        if [ $# -eq 3 ] && [ "$1" = "scan" ] && [ "$2" = "antivirus" ]; then
+        if [ $# -eq 3 ] && [ "$1" = "scan" ] && [ "$2" = "antivirus" ] && [  "$3" != "all" ]; then
                 echo  "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
                 echo  "Scan target : $3 "
                 echo  "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
                 sudo clamscan -r $3
         fi
-        echo $($# -eq 3)
         #TODO : Vérifier mes droits dans un fichiers / dossier
 else
     cat README.md
