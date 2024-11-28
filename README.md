@@ -2,7 +2,7 @@
 
 
 # RUN *Parness* 
-`sudo ./parness `*`[options]`*``
+`sudo ./parness `*`[options]`*
 
 # REQUIREMENTS 
 
