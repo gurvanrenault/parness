@@ -1,39 +1,78 @@
-*Parness* is a simple bash script to check the configuration of your Linux system.
+*Parness* is a simple bash script to check the configuration and the health of your Linux system.
 
-# Requirements 
 
-In order to use Parness, you must have root privileges
+# RUN *Parness* 
+`sudo ./parness `*`[options]`*``
 
-# Commands 
+# REQUIREMENTS 
 
-* Check all the configuration
+* In order to use Parness, you must have root privileges
 
-``sh parness check all ``
+* Chkrootkit : 
+``sudo apt get install chkrootkit ``
 
-* Check memory state
+* ClamAV : 
+``sudo apt get install clamav ``
 
-``sh parness check memory ``
+# COMMANDS 
 
-* Check disk usage
+## Check the configuration
+   
+* ``check all `` \
+  \
+  Check all the configurations.
 
-``sh parness check diskspace ``
+* `` check memory `` \
+  \
+  Check the memory state of the system.
+  
+* ``check diskspace `` \
+  \
+  Check the disk usage of the system.
 
-* Check DNS configuration
+* ``check dns `` \
+  \
+  Check DNS configuration.
+  The file *whitelistDNS* contains all authorized DNS IP adresses.
+  The script check if the current DNS adress is in this whitelist. 
 
-``sh parness check dns ``
+* `` check proxy `` \
+\
+Check the configuration of the proxy.
 
-The file *whitelistDNS* contains all authorized DNS IP adresses.
-The script check if the current DNS adress is in this whitelist 
+* ``check sudoers`` \
+\
+Check the list of sudoers.
 
-* Check proxy configuration
+* ``check daemon `` \
+\
+List all deamons processes.
 
-`` sh parness check proxy ``
 
-* Check the list of sudoers
+## Scan  of your system 
 
-`` sh parness check sudoers``
+* ``scan rootkit `` \
+\
+Detect the presence of rootkits.
 
-* Check deamon processes
+* ``scan antivirus all `` \
+\
+Detect viruses within predifined set of files (binaries,home) .
 
-``sh parness check daemon ``
+* ``scan antivirus binaries `` \
+\
+Detect viruses within binaries.
+
+* ``scan antivirus home `` \
+\
+Detect viruses within user file system.
+
+* ``scan antivirus [path/to/directory]`` \
+\
+Detect viruses within a path.
+
+
+
+
+
 
