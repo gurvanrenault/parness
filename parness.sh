@@ -123,29 +123,25 @@ if [ "$isCommandFound" = true ] && [ "$(id -u)" -eq 0 ] && ([ "$isParameterCheck
                 echo  "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
                 
                 mac_adresses_nearby="$(sudo iwlist wlp0s20f3 scanning | grep -Eo '(([0-9]|[A-Z]){2}+\:){5}([0-9]|[A-Z]){2}')"
-                freq_net_nearby="$(sudo iwlist wlp0s20f3 scanning | grep "Frequency")"
                 essid_net_nearby="$(sudo iwlist wlp0s20f3 scanning | grep "ESSID" | grep -o '".*"')"
                 essid_net_nearby="$(echo $essid_net_nearby | tr -d '"')"
                 
 
 
                 essid_net_nearby_arr=($essid_net_nearby)
-                freq_net_nearby_arr=($freq_net_nearby)
                 mac_adresses_nearby_arr=($mac_adresses_nearby)
 
                 
                 index_net=0
-                essid_net_evil_twin=""
                 for mac_adress in $mac_adresses_nearby; do
                      essid=${essid_net_nearby_arr[$index_net]}
-                     freq_net=${freq_net_nearby_arr[$index_net]}
                      count_occ_essid=$(echo "$essid_net_nearby" | grep -o "$essid" | wc -l)
                      count_occ_mac=$(echo "$mac_adresses_nearby" | grep -o "$mac_adress" | wc -l)
 
                      echo " Network found ESSID:  $essid MAC:  $mac_adress ..."
                      
                      if [ $count_occ_essid -ge 2 ] && [ $count_occ_essid != $count_occ_mac ]; then
-                        echo "${YELLOW} Potential evil twin attack is detected ESSID : $essid MAC:$mac_adress"
+                        echo "${YELLOW} Potential evil twin attack  detected ESSID : $essid MAC:$mac_adress"
                         echo "Please investigate using iwlist <interface> scanning ${NC}"
                      fi 
                      index_net=$index_net+1
