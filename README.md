@@ -71,6 +71,9 @@ Detect viruses within user file system.
 \
 Detect viruses within a path.
 
+* ``scan eviltwin `` \
+\
+Detect the presence of potential evil twins in the network.
 
 
 

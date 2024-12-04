@@ -1,15 +1,16 @@
-#!/bin/sh
+#!/bin/bash
 
-GREEN='\033[0;32m'
-RED='\033[0;31m'
-BLANK='\033[0;37m'
+GREEN=$'\e[0;32m'
+YELLOW=$'\e[0;33m'
+RED=$'\e[0;31m'
+NC=$'\e[0m'
 
 isCommandFound=false
 isParameterCheckFound=false
 isParameterScanFound=false
 list_commands="check scan"
 list_parameters_check="dns all proxy daemon memory diskspace sudoers"
-list_parameters_scan=" all rootkit antivirus"
+list_parameters_scan=" all rootkit antivirus eviltwin"
 echo "${BLANK}"
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Sanitize input from user 
@@ -54,8 +55,7 @@ if [ "$isCommandFound" = true ] && [ "$(id -u)" -eq 0 ] && ([ "$isParameterCheck
         echo "\____ \__  \\_  __ \/    \_/ __ \ /  ___//  ___/"
         echo "|  |_> > __ \|  | \/   |  \  ___/ \___ \ \___ \ "
         echo "|   __(____  /__|  |___|  /\___  >____  >____  >"
-        echo "|__|       \/           \/     \/     \/     \/ "            
-        
+        echo "|__|       \/           \/     \/     \/     \/ "           
         # Add your name here if you participate to this project  
         echo " By : Gurvan Renault"
 
@@ -82,9 +82,9 @@ if [ "$isCommandFound" = true ] && [ "$(id -u)" -eq 0 ] && ([ "$isParameterCheck
                 echo "DNS value found :  $DNSVALUE in /etc/resolv.conf"
                 echo "Searching DNS value in the whitelist"
                 if grep -q $DNSVALUE whitelistDNS ; then
-                echo "${GREEN}DNS value found in whitelist ${BLANK}"
+                echo "${GREEN} DNS value found in whitelist ${NC}"
                 else
-                echo -e "${RED}DNS value seems altered and/or malicious ${BLANK}"
+                echo -e "${RED} DNS value seems altered and/or malicious ${NC}"
                 fi
         fi 
         if [ "$1" = "check" ] && ([ "$2" = "proxy" ] || [ "$2" = "all" ]); then
@@ -116,6 +116,48 @@ if [ "$isCommandFound" = true ] && [ "$(id -u)" -eq 0 ] && ([ "$isParameterCheck
         fi
 
         #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~     
+
+        if [ "$1" = "scan" ] && ([ "$2" = "eviltwin" ] ||  [ "$2" = "all" ]); then
+                echo  "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+                echo  "~~~~~~~~~~~~~~~ Evil Twin Detection ~~~~~~~~~~~~~~~~~"
+                echo  "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+                
+                mac_adresses_nearby="$(sudo iwlist wlp0s20f3 scanning | grep -Eo '(([0-9]|[A-Z]){2}+\:){5}([0-9]|[A-Z]){2}')"
+                freq_net_nearby="$(sudo iwlist wlp0s20f3 scanning | grep "Frequency")"
+                essid_net_nearby="$(sudo iwlist wlp0s20f3 scanning | grep "ESSID" | grep -o '".*"')"
+                essid_net_nearby="$(echo $essid_net_nearby | tr -d '"')"
+                
+
+
+                essid_net_nearby_arr=($essid_net_nearby)
+                freq_net_nearby_arr=($freq_net_nearby)
+                mac_adresses_nearby_arr=($mac_adresses_nearby)
+
+                
+                index_net=0
+                essid_net_evil_twin=""
+                for mac_adress in $mac_adresses_nearby; do
+                     essid=${essid_net_nearby_arr[$index_net]}
+                     freq_net=${freq_net_nearby_arr[$index_net]}
+                     count_occ_essid=$(echo "$essid_net_nearby" | grep -o "$essid" | wc -l)
+                     count_occ_mac=$(echo "$mac_adresses_nearby" | grep -o "$mac_adress" | wc -l)
+
+                     echo " Network found ESSID:  $essid MAC:  $mac_adress ..."
+                     
+                     if [ $count_occ_essid -ge 2 ] && [ $count_occ_essid != $count_occ_mac ]; then
+                        echo "${YELLOW} Potential evil twin attack is detected ESSID : $essid MAC:$mac_adress"
+                        echo "Please investigate using iwlist <interface> scanning ${NC}"
+                     fi 
+                     index_net=$index_net+1
+                done
+                
+
+
+
+
+
+
+        fi
 
         if [ "$1" = "scan" ] && ([ "$2" = "rootkit" ] ||  [ "$2" = "all" ]); then
                 echo  "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
